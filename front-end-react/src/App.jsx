@@ -11,38 +11,44 @@ import ProductView from "./pages/ProductViewPage/ProductView";
 //components
 import Navigation from "./components/Navigation";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Navigation />,
-    errorElement: (
-      <>
-        <Navigation />
-        <p>404: Page Not Found</p>
-      </>
-    ),
-    children: [
-      {
-        path: "/",
-        element: <HomePage />,
-      },
-      {
-        path: "/products",
-        element: <Products />,
-      },
-      {
-        path: "/products/:productId",
-        element: <ProductView />,
-      },
-      {
-        path: "/about",
-        element: <About />,
-      },
-    ],
-  },
-]);
-
 function App() {
+  const [productData, setProductData] = useState({});
+
+  function productDataHandler(img, name, color, price) {
+    setProductData({ img, name, color, price });
+  }
+
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Navigation />,
+      errorElement: (
+        <>
+          <Navigation />
+          <p>404: Page Not Found</p>
+        </>
+      ),
+      children: [
+        {
+          path: "/",
+          element: <HomePage />,
+        },
+        {
+          path: "/products",
+          element: <Products productDataHandler={productDataHandler} />,
+        },
+        {
+          path: "/products/:productId",
+          element: <ProductView productData={productData} />,
+        },
+        {
+          path: "/about",
+          element: <About />,
+        },
+      ],
+    },
+  ]);
+
   return (
     <>
       <RouterProvider router={router} />
