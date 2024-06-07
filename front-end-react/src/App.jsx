@@ -6,6 +6,7 @@ import "./App.css";
 import HomePage from "./pages/HomePage/HomePage";
 import Products from "./pages/ProductsPage/Products";
 import About from "./pages/AboutPage/About";
+import ProductView from "./pages/ProductViewPage/ProductView";
 
 //components
 import Navigation from "./components/Navigation";
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
       {
         path: "/products",
         element: <Products />,
+      },
+      {
+        path: "/products/:productId",
+        element: <ProductView />,
       },
       {
         path: "/about",
