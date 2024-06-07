@@ -19,10 +19,20 @@ function App() {
   const [cart, setCart] = useState([]);
 
   function cartHandler(pData) {
-    if (cart.includes(pData)) {
-      return;
-    }
-    setCart((prevCart) => [...prevCart, pData]);
+    console.log(cart);
+    console.log(pData);
+    // if (cart.includes(pData)) {
+    //   return;
+    // }
+    setCart((prevCart) => {
+      for (let el of prevCart) {
+        if (el.id == pData.id) {
+          return prevCart;
+        }
+      }
+      console.log("out of the check");
+      return [...prevCart, pData];
+    });
   }
 
   function cartRemoveHandler(pid) {
