@@ -7,6 +7,7 @@ import HomePage from "./pages/HomePage/HomePage";
 import Products from "./pages/ProductsPage/Products";
 import About from "./pages/AboutPage/About";
 import ProductView from "./pages/ProductViewPage/ProductView";
+import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 
 //components
 import Navigation from "./components/Navigation";
@@ -25,7 +26,7 @@ function App() {
       errorElement: (
         <>
           <Navigation />
-          <p>404: Page Not Found</p>
+          <NotFoundPage />
         </>
       ),
       children: [
