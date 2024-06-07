@@ -22,6 +22,7 @@
 import { useState } from "react";
 import { StarIcon } from "@heroicons/react/20/solid";
 import { Radio, RadioGroup } from "@headlessui/react";
+import { Link, useParams, Navigate } from "react-router-dom";
 
 const product = {
   name: "Basic Tee 6-Pack",
@@ -85,6 +86,13 @@ export default function ProductView({ productData, cartHandler }) {
   const [selectedColor, setSelectedColor] = useState(product.colors[0]);
   const [selectedSize, setSelectedSize] = useState(product.sizes[2]);
 
+  const params = useParams();
+
+  if (productData.id != params.productId) {
+    return <Navigate to="/" />;
+    console.log(params.productId);
+    console.log(productData.id);
+  }
   return (
     <div className="bg-white">
       <div className="pt-6">

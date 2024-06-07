@@ -75,6 +75,7 @@ export default function Products({ productDataHandler }) {
               className="group relative"
               onClick={() =>
                 productDataHandler(
+                  product.id,
                   product.imageSrc,
                   product.name,
                   product.color,

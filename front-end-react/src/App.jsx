@@ -26,8 +26,8 @@ function App() {
     setOpenCart(st);
   }
 
-  function productDataHandler(img, name, color, price) {
-    setProductData({ img, name, color, price });
+  function productDataHandler(id, img, name, color, price) {
+    setProductData({ id, img, name, color, price });
   }
 
   const router = createBrowserRouter([
