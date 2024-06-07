@@ -39,7 +39,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Navigation() {
+export default function Navigation({ openCartHandler }) {
   return (
     <>
       {/*
@@ -87,6 +87,7 @@ export default function Navigation() {
                   <div className="hidden md:block">
                     <div className="ml-4 flex items-center md:ml-6">
                       <button
+                        onClick={openCartHandler}
                         type="button"
                         className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                       >
@@ -197,7 +198,9 @@ export default function Navigation() {
                         {user.email}
                       </div>
                     </div>
+
                     <button
+                      onClick={() => openCartHandler(true)}
                       type="button"
                       className="relative ml-auto flex-shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                     >

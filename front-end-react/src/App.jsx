@@ -8,12 +8,18 @@ import Products from "./pages/ProductsPage/Products";
 import About from "./pages/AboutPage/About";
 import ProductView from "./pages/ProductViewPage/ProductView";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
+import Cart from "./pages/CartPage/Cart";
 
 //components
 import Navigation from "./components/Navigation";
 
 function App() {
   const [productData, setProductData] = useState({});
+  const [openCart, setOpenCart] = useState(false);
+
+  function openCartHandler(st) {
+    setOpenCart(st);
+  }
 
   function productDataHandler(img, name, color, price) {
     setProductData({ img, name, color, price });
@@ -22,13 +28,17 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Navigation />,
-      errorElement: (
+      element: (
         <>
-          <Navigation />
-          <NotFoundPage />
+          <Navigation openCartHandler={openCartHandler} />
+          <Cart
+            openCart={openCart}
+            openCartHandler={openCartHandler}
+            setOpenCart={setOpenCart}
+          />
         </>
       ),
+      errorElement: <NotFoundPage />,
       children: [
         {
           path: "/",
