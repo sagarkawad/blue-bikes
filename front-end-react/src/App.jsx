@@ -1,10 +1,17 @@
 import { useState } from "react";
 import "./App.css";
 
+//pages
+import HomePage from "./pages/HomePage/HomePage";
+
+//components
+import Navigation from "./components/Navigation";
+
 function App() {
   return (
     <>
-      <h1 className="text-blue-300">Blue Bikes</h1>
+      <Navigation />
+      <HomePage />
     </>
   );
 }
