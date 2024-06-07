@@ -36,7 +36,13 @@ const products = [
   // More products...
 ];
 
-export default function Cart({ openCart, openCartHandler, setOpenCart, cart }) {
+export default function Cart({
+  openCart,
+  openCartHandler,
+  setOpenCart,
+  cart,
+  cartRemoveHandler,
+}) {
   //   const [open, setOpen] = useState(true);
 
   return (
@@ -119,6 +125,9 @@ export default function Cart({ openCart, openCartHandler, setOpenCart, cart }) {
 
                                     <div className="flex">
                                       <button
+                                        onClick={() =>
+                                          cartRemoveHandler(product.id)
+                                        }
                                         type="button"
                                         className="font-medium text-indigo-600 hover:text-indigo-500"
                                       >

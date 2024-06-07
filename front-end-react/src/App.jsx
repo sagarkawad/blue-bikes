@@ -19,7 +19,17 @@ function App() {
   const [cart, setCart] = useState([]);
 
   function cartHandler(pData) {
+    if (cart.includes(pData)) {
+      return;
+    }
     setCart((prevCart) => [...prevCart, pData]);
+  }
+
+  function cartRemoveHandler(pid) {
+    //removes the data from the cart
+    setCart((prevCart) => {
+      return prevCart.filter((el) => el.id != pid);
+    });
   }
 
   function openCartHandler(st) {
@@ -41,6 +51,7 @@ function App() {
             openCartHandler={openCartHandler}
             setOpenCart={setOpenCart}
             cart={cart}
+            cartRemoveHandler={cartRemoveHandler}
           />
         </>
       ),
