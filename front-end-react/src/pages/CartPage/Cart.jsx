@@ -36,7 +36,7 @@ const products = [
   // More products...
 ];
 
-export default function Cart({ openCart, openCartHandler, setOpenCart }) {
+export default function Cart({ openCart, openCartHandler, setOpenCart, cart }) {
   //   const [open, setOpen] = useState(true);
 
   return (
@@ -90,12 +90,12 @@ export default function Cart({ openCart, openCartHandler, setOpenCart }) {
                             role="list"
                             className="-my-6 divide-y divide-gray-200"
                           >
-                            {products.map((product) => (
+                            {cart.map((product) => (
                               <li key={product.id} className="flex py-6">
                                 <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                   <img
-                                    src={product.imageSrc}
-                                    alt={product.imageAlt}
+                                    src={product.img}
+                                    alt={product.name}
                                     className="h-full w-full object-cover object-center"
                                   />
                                 </div>
@@ -115,9 +115,7 @@ export default function Cart({ openCart, openCartHandler, setOpenCart }) {
                                     </p>
                                   </div>
                                   <div className="flex flex-1 items-end justify-between text-sm">
-                                    <p className="text-gray-500">
-                                      Qty {product.quantity}
-                                    </p>
+                                    <p className="text-gray-500">Qty 1</p>
 
                                     <div className="flex">
                                       <button

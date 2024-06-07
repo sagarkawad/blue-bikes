@@ -81,7 +81,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function ProductView({ productData }) {
+export default function ProductView({ productData, cartHandler }) {
   const [selectedColor, setSelectedColor] = useState(product.colors[0]);
   const [selectedSize, setSelectedSize] = useState(product.sizes[2]);
 
@@ -165,7 +165,7 @@ export default function ProductView({ productData }) {
               </div>
             </div>
 
-            <form className="mt-10">
+            <div className="mt-10">
               {/* Colors */}
               <div>
                 <h3 className="text-sm font-medium text-gray-900">Color</h3>
@@ -280,12 +280,12 @@ export default function ProductView({ productData }) {
               </div>
 
               <button
-                type="submit"
+                onClick={() => cartHandler(productData)}
                 className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
               >
                 Add to bag
               </button>
-            </form>
+            </div>
           </div>
 
           <div className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">

@@ -16,6 +16,11 @@ import Navigation from "./components/Navigation";
 function App() {
   const [productData, setProductData] = useState({});
   const [openCart, setOpenCart] = useState(false);
+  const [cart, setCart] = useState([]);
+
+  function cartHandler(pData) {
+    setCart((prevCart) => [...prevCart, pData]);
+  }
 
   function openCartHandler(st) {
     setOpenCart(st);
@@ -35,6 +40,7 @@ function App() {
             openCart={openCart}
             openCartHandler={openCartHandler}
             setOpenCart={setOpenCart}
+            cart={cart}
           />
         </>
       ),
@@ -50,7 +56,9 @@ function App() {
         },
         {
           path: "/products/:productId",
-          element: <ProductView productData={productData} />,
+          element: (
+            <ProductView productData={productData} cartHandler={cartHandler} />
+          ),
         },
         {
           path: "/about",
