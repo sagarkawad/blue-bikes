@@ -10,7 +10,7 @@ export default function HomePage() {
               Belt Bicycles are finally here
             </h1>
             <p className="mt-4 text-xl text-gray-500">
-              Blue Bikes is here, manufacturing belt bikes for the first time in
+              bluebikes is here, manufacturing belt bikes for the first time in
               India.
             </p>
           </div>
