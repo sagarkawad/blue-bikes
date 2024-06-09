@@ -13,9 +13,30 @@
   ```
 */
 
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
+import { useState } from "react";
+import axios from "axios";
 
 export default function SignUp() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  async function setDataHandler() {
+    console.log("signup clicked");
+
+    try {
+      const response = await axios.post("http://localhost:3000/register", {
+        email,
+        password,
+      });
+      console.log("Data sent successfully", response.data);
+
+      // <Navigate to="/signin" />;
+    } catch (error) {
+      console.error("Error sending data", error);
+    }
+  }
+
   return (
     <>
       {/*
@@ -39,7 +60,7 @@ export default function SignUp() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" action="#" method="POST">
+          <div className="space-y-6">
             <div>
               <label
                 htmlFor="email"
@@ -49,6 +70,9 @@ export default function SignUp() {
               </label>
               <div className="mt-2">
                 <input
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
                   id="email"
                   name="email"
                   type="email"
@@ -78,6 +102,9 @@ export default function SignUp() {
               </div>
               <div className="mt-2">
                 <input
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
                   id="password"
                   name="password"
                   type="password"
@@ -90,13 +117,14 @@ export default function SignUp() {
 
             <div>
               <button
+                onClick={setDataHandler}
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                Sign in
+                Sign Up
               </button>
             </div>
-          </form>
+          </div>
           <p className="mt-10 text-center text-sm text-gray-500">
             Already Signed up?{" "}
             <Link

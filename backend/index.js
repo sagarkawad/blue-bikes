@@ -62,6 +62,13 @@ const User = mongoose.model("User", userSchema);
 app.post("/register", async (req, res) => {
   try {
     const { email, password } = req.body;
+
+    // Check if the user is already registered
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).send("User already registered");
+    }
+
     const user = new User({ email, password });
     await user.save();
     res.status(201).send("User registered");
