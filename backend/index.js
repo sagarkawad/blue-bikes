@@ -1,11 +1,15 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+const JWT_SECRET = "secret";
 
 mongoose
   .connect(
@@ -18,6 +22,70 @@ const Product = mongoose.model("Product", {
   color: String,
   name: String,
   price: Number,
+});
+
+const userSchema = new mongoose.Schema({
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true,
+    trim: true,
+    match: [/^\S+@\S+\.\S+$/, "Please use a valid email address."],
+  },
+  password: {
+    type: String,
+    required: true,
+    minlength: 6,
+  },
+});
+
+// Pre-save hook to hash the password before saving
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+  try {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Method to compare passwords
+userSchema.methods.comparePassword = async function (candidatePassword) {
+  return await bcrypt.compare(candidatePassword, this.password);
+};
+
+const User = mongoose.model("User", userSchema);
+
+app.post("/register", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = new User({ email, password });
+    await user.save();
+    res.status(201).send("User registered");
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
+
+app.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).send("Invalid email or password");
+    }
+    const isMatch = await user.comparePassword(password);
+    if (!isMatch) {
+      return res.status(400).send("Invalid email or password");
+    }
+    const token = jwt.sign({ email }, JWT_SECRET);
+    res.send({ token });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
 });
 
 app.get("/products", async function (req, res) {
