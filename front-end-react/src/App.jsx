@@ -10,6 +10,8 @@ import About from "./pages/AboutPage/About";
 import ProductView from "./pages/ProductViewPage/ProductView";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 import Cart from "./pages/CartPage/Cart";
+import SignIn from "./pages/SignInPage/SignIn";
+import SignUp from "./pages/SignUpPage/SignUp";
 
 //components
 import Navigation from "./components/Navigation";
@@ -65,6 +67,14 @@ function App() {
   }
 
   const router = createBrowserRouter([
+    {
+      path: "/signup",
+      element: <SignUp />,
+    },
+    {
+      path: "/signin",
+      element: <SignIn />,
+    },
     {
       path: "/",
       element: (
