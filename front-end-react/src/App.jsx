@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
+import axios from "axios";
 
 //pages
 import HomePage from "./pages/HomePage/HomePage";
@@ -17,6 +18,19 @@ function App() {
   const [productData, setProductData] = useState({});
   const [openCart, setOpenCart] = useState(false);
   const [cart, setCart] = useState([]);
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/products")
+      .then((response) => {
+        console.log(response.data);
+        setProducts(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+      });
+  }, []);
 
   function cartHandler(pData) {
     console.log(cart);
@@ -73,7 +87,12 @@ function App() {
         },
         {
           path: "/products",
-          element: <Products productDataHandler={productDataHandler} />,
+          element: (
+            <Products
+              productDataHandler={productDataHandler}
+              products={products}
+            />
+          ),
         },
         {
           path: "/products/:productId",
