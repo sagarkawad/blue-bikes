@@ -1,7 +1,11 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 
 const app = express();
+
+app.use(cors());
+app.use(express.json());
 
 mongoose
   .connect(
@@ -9,14 +13,16 @@ mongoose
   )
   .then(() => console.log("Connected!"));
 
-const Product = mongoose.model("Products", { name: String });
-
-const product = new Product({
-  name: "sam",
+const Product = mongoose.model("Product", {
+  img: String,
+  color: String,
+  name: String,
+  price: Number,
 });
 
-product.save().then(() => {
-  console.log("product successfully stored!");
+app.get("/products", async function (req, res) {
+  const products = await Product.find();
+  res.json(products);
 });
 
 app.listen(3000, () => {
