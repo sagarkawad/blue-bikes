@@ -30,8 +30,10 @@ export default function SignUp() {
         password,
       });
       console.log("Data sent successfully", response.data);
+      setEmail("");
+      setPassword("");
 
-      // <Navigate to="/signin" />;
+      <Navigate to="/signin" />;
     } catch (error) {
       console.error("Error sending data", error);
     }
@@ -73,6 +75,7 @@ export default function SignUp() {
                   onChange={(e) => {
                     setEmail(e.target.value);
                   }}
+                  value={email}
                   id="email"
                   name="email"
                   type="email"
@@ -105,6 +108,7 @@ export default function SignUp() {
                   onChange={(e) => {
                     setPassword(e.target.value);
                   }}
+                  value={password}
                   id="password"
                   name="password"
                   type="password"

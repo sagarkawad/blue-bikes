@@ -31,6 +31,8 @@ export default function SignIn() {
       });
       console.log("Data sent successfully", response.data);
       localStorage.setItem("authToken", response.data.token);
+      setEmail("");
+      setPassword("");
     } catch (error) {
       console.error("Error sending data", error);
     }
@@ -72,6 +74,7 @@ export default function SignIn() {
                   onChange={(e) => {
                     setEmail(e.target.value);
                   }}
+                  value={email}
                   id="email"
                   name="email"
                   type="email"
@@ -104,6 +107,7 @@ export default function SignIn() {
                   onChange={(e) => {
                     setPassword(e.target.value);
                   }}
+                  value={password}
                   id="password"
                   name="password"
                   type="password"
