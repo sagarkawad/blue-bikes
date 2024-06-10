@@ -24,6 +24,22 @@ const Product = mongoose.model("Product", {
   price: Number,
 });
 
+// Define a schema for the items
+const itemSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  color: {
+    type: String,
+    required: true,
+  },
+  price: {
+    type: String,
+    required: true,
+  },
+});
+
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
@@ -41,9 +57,7 @@ const userSchema = new mongoose.Schema({
   address: {
     type: String,
   },
-  items: {
-    type: Array,
-  },
+  items: [itemSchema],
 });
 
 // Pre-save hook to hash the password before saving

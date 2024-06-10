@@ -15,9 +15,11 @@
 import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import { useState, useRef } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Address() {
   const [address, setAddress] = useState({});
+  const navigate = useNavigate();
 
   async function setSaveHandler() {
     const jsonStringifyAddress = JSON.stringify(address);
@@ -28,6 +30,7 @@ export default function Address() {
         address: jsonStringifyAddress,
       });
       console.log("Data submitted successfully", response.data);
+      navigate("/payment");
     } catch (error) {
       console.error("Error submitting data", error);
     }
