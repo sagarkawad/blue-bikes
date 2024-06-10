@@ -38,6 +38,9 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 6,
   },
+  address: {
+    type: String,
+  },
 });
 
 // Pre-save hook to hash the password before saving
@@ -112,13 +115,14 @@ app.post("/checkout", async function (req, res) {
 app.post("/address", async function (req, res) {
   jwt.verify(req.body.token, JWT_SECRET, async (err, decoded) => {
     if (err) {
-      return console.error("Token verification failed:", err);
+      res.json({ error: err });
     }
     console.log("Token is valid:", decoded);
-    await User.updateOne(
-      { email: SignedInUser },
+    const DBUser = await User.updateOne(
+      { email: decoded.email },
       { $set: { address: req.body.address } }
     );
+    res.json({ msg: DBUser });
   });
 });
 
