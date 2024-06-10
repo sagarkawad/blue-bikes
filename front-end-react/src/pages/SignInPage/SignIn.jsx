@@ -13,13 +13,15 @@
   ```
 */
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
 
   async function setDataHandler() {
     console.log("signin clicked");
@@ -33,6 +35,7 @@ export default function SignIn() {
       localStorage.setItem("authToken", response.data.token);
       setEmail("");
       setPassword("");
+      navigate("/");
     } catch (error) {
       console.error("Error sending data", error);
     }

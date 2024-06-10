@@ -93,6 +93,9 @@ export default function ProductView({ productData, cartHandler }) {
     console.log(params.productId);
     console.log(productData.id);
   }
+
+  
+
   return (
     <div className="bg-white">
       <div className="pt-6">

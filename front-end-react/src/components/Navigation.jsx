@@ -15,7 +15,8 @@ import {
   XMarkIcon,
   ShoppingCartIcon,
 } from "@heroicons/react/24/outline";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const user = {
   name: "Tom Cook",
@@ -28,18 +29,27 @@ const navigation = [
   { name: "Products", href: "/products", current: false },
   { name: "About Us", href: "/about", current: false },
 ];
-const userNavigation = [
-  { name: "Your Profile", href: "#" },
-  { name: "Wishlist", href: "#" },
-  { name: "Settings", href: "#" },
-  { name: "Sign out", href: "#" },
-];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function Navigation({ openCartHandler }) {
+  const [isSigned, setIsSigned] = useState(localStorage.getItem("authToken"));
+
+  let userNavigation;
+
+  if (localStorage.getItem("authToken")) {
+    userNavigation = [
+      { name: "Your Profile", href: "#" },
+      { name: "Wishlist", href: "#" },
+      { name: "Settings", href: "#" },
+      { name: "Sign out", href: "/" },
+    ];
+  } else {
+    userNavigation = [{ name: "Sign In", href: "/signin" }];
+  }
+
   return (
     <>
       {/*
@@ -123,17 +133,35 @@ export default function Navigation({ openCartHandler }) {
                           <MenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                             {userNavigation.map((item) => (
                               <MenuItem key={item.name}>
-                                {({ focus }) => (
-                                  <a
-                                    href={item.href}
-                                    className={classNames(
-                                      focus ? "bg-gray-100" : "",
-                                      "block px-4 py-2 text-sm text-gray-700"
+                                {item.name == "Sign out"
+                                  ? ({ focus }) => (
+                                      <Link
+                                        to={item.href}
+                                        onClick={() => {
+                                          console.log("button clicked");
+                                          localStorage.removeItem("authToken");
+                                          setIsSigned(false);
+                                          // useNavigate()("/");
+                                        }}
+                                        className={classNames(
+                                          focus ? "bg-gray-100" : "",
+                                          "block px-4 py-2 text-sm text-gray-700"
+                                        )}
+                                      >
+                                        {item.name}
+                                      </Link>
+                                    )
+                                  : ({ focus }) => (
+                                      <Link
+                                        to={item.href}
+                                        className={classNames(
+                                          focus ? "bg-gray-100" : "",
+                                          "block px-4 py-2 text-sm text-gray-700"
+                                        )}
+                                      >
+                                        {item.name}
+                                      </Link>
                                     )}
-                                  >
-                                    {item.name}
-                                  </a>
-                                )}
                               </MenuItem>
                             ))}
                           </MenuItems>
@@ -213,16 +241,30 @@ export default function Navigation({ openCartHandler }) {
                     </button>
                   </div>
                   <div className="mt-3 space-y-1 px-2">
-                    {userNavigation.map((item) => (
-                      <DisclosureButton
-                        key={item.name}
-                        as="a"
-                        href={item.href}
-                        className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
-                      >
-                        {item.name}
-                      </DisclosureButton>
-                    ))}
+                    {userNavigation.map((item) =>
+                      item.name == "Sign Out" ? (
+                        <DisclosureButton
+                          key={item.name}
+                          as="a"
+                          onClick={() => {
+                            localStorage.removeItem("authToken");
+                            useNavigate()("/");
+                          }}
+                          className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
+                        >
+                          {item.name}
+                        </DisclosureButton>
+                      ) : (
+                        <DisclosureButton
+                          key={item.name}
+                          as="a"
+                          href={item.href}
+                          className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
+                        >
+                          {item.name}
+                        </DisclosureButton>
+                      )
+                    )}
                   </div>
                 </div>
               </DisclosurePanel>
