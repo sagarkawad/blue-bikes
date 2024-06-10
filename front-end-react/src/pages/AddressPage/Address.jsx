@@ -13,9 +13,16 @@
   ```
 */
 import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
+import { useState, useRef } from "react";
+import axios from "axios";
 
 export default function Address() {
-    
+  const [address, setAddress] = useState({});
+
+  function setSaveHandler() {
+    console.log(address);
+  }
+
   return (
     <div className="p-16">
       <div className="space-y-12">
@@ -150,6 +157,11 @@ export default function Address() {
               </label>
               <div className="mt-2">
                 <input
+                  onChange={(e) =>
+                    setAddress((prevData) => {
+                      return { ...prevData, fname: e.target.value };
+                    })
+                  }
                   type="text"
                   name="first-name"
                   id="first-name"
@@ -168,6 +180,11 @@ export default function Address() {
               </label>
               <div className="mt-2">
                 <input
+                  onChange={(e) =>
+                    setAddress((prevData) => {
+                      return { ...prevData, lname: e.target.value };
+                    })
+                  }
                   type="text"
                   name="last-name"
                   id="last-name"
@@ -186,6 +203,11 @@ export default function Address() {
               </label>
               <div className="mt-2">
                 <input
+                  onChange={(e) =>
+                    setAddress((prevData) => {
+                      return { ...prevData, email: e.target.value };
+                    })
+                  }
                   id="email"
                   name="email"
                   type="email"
@@ -204,6 +226,11 @@ export default function Address() {
               </label>
               <div className="mt-2">
                 <select
+                  onChange={(e) =>
+                    setAddress((prevData) => {
+                      return { ...prevData, country: e.target.value };
+                    })
+                  }
                   id="country"
                   name="country"
                   autoComplete="country-name"
@@ -225,6 +252,11 @@ export default function Address() {
               </label>
               <div className="mt-2">
                 <input
+                  onChange={(e) =>
+                    setAddress((prevData) => {
+                      return { ...prevData, street: e.target.value };
+                    })
+                  }
                   type="text"
                   name="street-address"
                   id="street-address"
@@ -243,6 +275,11 @@ export default function Address() {
               </label>
               <div className="mt-2">
                 <input
+                  onChange={(e) =>
+                    setAddress((prevData) => {
+                      return { ...prevData, city: e.target.value };
+                    })
+                  }
                   type="text"
                   name="city"
                   id="city"
@@ -261,6 +298,11 @@ export default function Address() {
               </label>
               <div className="mt-2">
                 <input
+                  onChange={(e) =>
+                    setAddress((prevData) => {
+                      return { ...prevData, state: e.target.value };
+                    })
+                  }
                   type="text"
                   name="region"
                   id="region"
@@ -279,6 +321,11 @@ export default function Address() {
               </label>
               <div className="mt-2">
                 <input
+                  onChange={(e) =>
+                    setAddress((prevData) => {
+                      return { ...prevData, pincode: e.target.value };
+                    })
+                  }
                   type="text"
                   name="postal-code"
                   id="postal-code"
@@ -434,6 +481,7 @@ export default function Address() {
           Cancel
         </button>
         <button
+          onClick={setSaveHandler}
           type="submit"
           className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         >
