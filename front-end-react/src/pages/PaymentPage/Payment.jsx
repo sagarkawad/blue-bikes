@@ -18,7 +18,7 @@ const Payment = (cart) => {
             try {
               const response = await axios.post(
                 "http://localhost:3000/payment",
-                { cart }
+                { cart, token: localStorage.getItem("authToken") }
               );
               console.log("Data submitted successfully", response.data);
               alert("Order Successfully Placed!");
