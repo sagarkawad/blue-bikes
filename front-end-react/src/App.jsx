@@ -13,6 +13,7 @@ import Cart from "./pages/CartPage/Cart";
 import SignIn from "./pages/SignInPage/SignIn";
 import SignUp from "./pages/SignUpPage/SignUp";
 import Address from "./pages/AddressPage/Address";
+import Payment from "./pages/PaymentPage/Payment";
 
 //components
 import Navigation from "./components/Navigation";
@@ -79,6 +80,10 @@ function App() {
     {
       path: "/address",
       element: <Address />,
+    },
+    {
+      path: "/payment",
+      element: <Payment cart={cart} />,
     },
     {
       path: "/",

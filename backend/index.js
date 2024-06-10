@@ -41,6 +41,9 @@ const userSchema = new mongoose.Schema({
   address: {
     type: String,
   },
+  items: {
+    type: Array,
+  },
 });
 
 // Pre-save hook to hash the password before saving
@@ -103,12 +106,16 @@ app.get("/products", async function (req, res) {
   res.json(products);
 });
 
-app.post("/checkout", async function (req, res) {
+app.post("/payment", async function (req, res) {
   jwt.verify(req.body.token, JWT_SECRET, async function (error, decoded) {
     if (error) {
       res.json({ error });
     }
-    res.json({ msg: decoded });
+    const DBUser = await User.updateOne(
+      { email: decoded.email },
+      { $set: { items: cart } }
+    );
+    res.json({ msg: DBUser });
   });
 });
 
