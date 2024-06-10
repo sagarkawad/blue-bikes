@@ -100,6 +100,15 @@ app.get("/products", async function (req, res) {
   res.json(products);
 });
 
+app.post("/checkout", async function (req, res) {
+  jwt.verify(req.body.token, JWT_SECRET, async function (error, decoded) {
+    if (error) {
+      res.json({ error });
+    }
+    res.json({ msg: decoded });
+  });
+});
+
 app.post("/address", async function (req, res) {
   jwt.verify(req.body.token, JWT_SECRET, async (err, decoded) => {
     if (err) {
