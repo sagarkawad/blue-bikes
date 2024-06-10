@@ -19,8 +19,18 @@ import axios from "axios";
 export default function Address() {
   const [address, setAddress] = useState({});
 
-  function setSaveHandler() {
-    console.log(address);
+  async function setSaveHandler() {
+    const jsonStringifyAddress = JSON.stringify(address);
+    console.log(jsonStringifyAddress);
+    try {
+      const response = await axios.post("http://localhost:3000/address", {
+        token: localStorage.getItem("authToken"),
+        address: jsonStringifyAddress,
+      });
+      console.log("Data submitted successfully", response.data);
+    } catch (error) {
+      console.error("Error submitting data", error);
+    }
   }
 
   return (
