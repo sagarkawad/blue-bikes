@@ -100,6 +100,19 @@ app.get("/products", async function (req, res) {
   res.json(products);
 });
 
+app.post("/address", async function (req, res) {
+  jwt.verify(req.body.token, JWT_SECRET, async (err, decoded) => {
+    if (err) {
+      return console.error("Token verification failed:", err);
+    }
+    console.log("Token is valid:", decoded);
+    await User.updateOne(
+      { email: SignedInUser },
+      { $set: { address: req.body.address } }
+    );
+  });
+});
+
 app.listen(3000, () => {
   console.log("server is up and running on port 3000");
 });
