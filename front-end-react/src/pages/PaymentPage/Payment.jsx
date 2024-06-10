@@ -1,5 +1,5 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Payment = ({ cart }) => {
@@ -7,6 +7,8 @@ const Payment = ({ cart }) => {
   if (cart.length == 0) {
     return <Navigate to="/products" />;
   }
+
+  const navigate = useNavigate();
 
   return (
     <div>
@@ -24,7 +26,7 @@ const Payment = ({ cart }) => {
               );
               console.log("Data submitted successfully", response.data);
               alert("Order Successfully Placed!");
-              <Navigate to="/products" />;
+              navigate("/products");
             } catch (error) {
               console.error("Error submitting data", error);
               alert("Order could not be placed: ", error);
