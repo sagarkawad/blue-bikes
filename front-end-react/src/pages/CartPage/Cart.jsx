@@ -157,16 +157,27 @@ export default function Cart({
                         Shipping and taxes calculated at checkout.
                       </p>
                       <div className="mt-6">
-                        <Link
-                          to={
-                            localStorage.getItem("authToken")
-                              ? "/address"
-                              : "/signin"
-                          }
-                          className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
-                        >
-                          Checkout
-                        </Link>
+                        {cart.length > 0 ? (
+                          <Link
+                            to={
+                              localStorage.getItem("authToken")
+                                ? "/address"
+                                : "/signin"
+                            }
+                            className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                          >
+                            Checkout
+                          </Link>
+                        ) : (
+                          <button
+                            onClick={() => {
+                              alert("Please add items to the cart");
+                            }}
+                            className="min-w-full flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                          >
+                            Checkout
+                          </button>
+                        )}
                       </div>
                       <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                         <p>
