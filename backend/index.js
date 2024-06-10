@@ -113,7 +113,7 @@ app.post("/payment", async function (req, res) {
     }
     const DBUser = await User.updateOne(
       { email: decoded.email },
-      { $set: { items: cart } }
+      { $set: { items: req.body.cart } }
     );
     res.json({ msg: DBUser });
   });
