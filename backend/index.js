@@ -40,6 +40,14 @@ const itemSchema = new mongoose.Schema({
   },
 });
 
+const Order = mongoose.model("Order", {
+  items: [itemSchema],
+  user: {
+    type: String,
+    required: true,
+  },
+});
+
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
@@ -57,7 +65,6 @@ const userSchema = new mongoose.Schema({
   address: {
     type: String,
   },
-  items: [itemSchema],
 });
 
 // Pre-save hook to hash the password before saving
@@ -125,11 +132,9 @@ app.post("/payment", async function (req, res) {
     if (error) {
       res.json({ error });
     }
-    const DBUser = await User.updateOne(
-      { email: decoded.email },
-      { $set: { items: req.body.cart } }
-    );
-    res.json({ msg: DBUser });
+    const order = new Order({ items: req.body.cart, user: decoded.email });
+    await order.save();
+    res.json({ msg: "order placed" });
   });
 });
 
