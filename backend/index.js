@@ -65,6 +65,7 @@ const userSchema = new mongoose.Schema({
   address: {
     type: String,
   },
+  products: [itemSchema],
 });
 
 // Pre-save hook to hash the password before saving
@@ -150,6 +151,35 @@ app.post("/address", async function (req, res) {
     );
     res.json({ msg: DBUser });
   });
+});
+
+async function decodeUser(req, res, next) {
+  jwt.verify(req.body.token, JWT_SECRET, async (err, decoded) => {
+    if (err) {
+      res.json({ error: err });
+    }
+    console.log("Token is valid:", decoded);
+    req.decoded = decoded;
+    next();
+  });
+}
+
+app.post("/addtocart", decodeUser, async function (req, res) {
+  if (!req.decoded) {
+    console.log("user cannot be found");
+    return;
+  }
+
+  try {
+    console.log(req.body.products);
+    const DBUser = await User.updateOne(
+      { email: req.decoded.email },
+      { $set: { products: req.body.products } }
+    );
+    res.json({ msg: "hey there: ", DBUser });
+  } catch (err) {
+    res.json({ msg: err });
+  }
 });
 
 app.listen(3000, () => {

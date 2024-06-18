@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  useNavigate,
+} from "react-router-dom";
 import "./App.css";
 import axios from "axios";
 
@@ -24,6 +28,8 @@ function App() {
   const [cart, setCart] = useState([]);
   const [products, setProducts] = useState([]);
 
+  // const navigate = useNavigate();
+
   useEffect(() => {
     axios
       .get("http://localhost:3000/products")
@@ -36,12 +42,18 @@ function App() {
       });
   }, []);
 
-  function cartHandler(pData) {
+  async function cartHandler(pData) {
     console.log(cart);
     console.log(pData);
     // if (cart.includes(pData)) {
     //   return;
     // }
+
+    if (!localStorage.getItem("authToken")) {
+      // navigate("/signin");
+      return;
+    }
+
     setCart((prevCart) => {
       for (let el of prevCart) {
         if (el.id == pData.id) {
@@ -49,6 +61,12 @@ function App() {
         }
       }
       console.log("out of the check");
+      axios.post("http://localhost:3000/addtocart", {
+        products: [...prevCart, pData],
+        token: localStorage.getItem("authToken"),
+      });
+      // console.log("resp: ", response);
+
       return [...prevCart, pData];
     });
   }
