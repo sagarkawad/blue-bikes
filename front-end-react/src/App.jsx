@@ -40,6 +40,18 @@ function App() {
       .catch((error) => {
         console.error("Error fetching data: ", error);
       });
+
+    axios
+      .post("http://localhost:3000/getcart", {
+        token: localStorage.getItem("authToken"),
+      })
+      .then((response) => {
+        console.log("res from useeffect: ", response);
+        if (response.data.products) {
+          console.log(response.data.products);
+          setCart(response.data.products);
+        }
+      });
   }, []);
 
   async function cartHandler(pData) {
@@ -55,17 +67,21 @@ function App() {
     }
 
     setCart((prevCart) => {
+      let productAvailable = false;
       for (let el of prevCart) {
-        if (el.id == pData.id) {
-          return prevCart;
+        if (el._id == pData._id) {
+          productAvailable = true;
         }
       }
-      console.log("out of the check");
+
+      if (productAvailable) {
+        return [...prevCart];
+      }
+
       axios.post("http://localhost:3000/addtocart", {
         products: [...prevCart, pData],
         token: localStorage.getItem("authToken"),
       });
-      // console.log("resp: ", response);
 
       return [...prevCart, pData];
     });
@@ -74,7 +90,11 @@ function App() {
   function cartRemoveHandler(pid) {
     //removes the data from the cart
     setCart((prevCart) => {
-      return prevCart.filter((el) => el.id != pid);
+      axios.post("http://localhost:3000/addtocart", {
+        products: prevCart.filter((el) => el._id != pid),
+        token: localStorage.getItem("authToken"),
+      });
+      return prevCart.filter((el) => el._id != pid);
     });
   }
 
@@ -82,8 +102,8 @@ function App() {
     setOpenCart(st);
   }
 
-  function productDataHandler(id, img, name, color, price) {
-    setProductData({ id, img, name, color, price });
+  function productDataHandler(_id, img, name, color, price) {
+    setProductData({ _id, img, name, color, price });
   }
 
   const router = createBrowserRouter([

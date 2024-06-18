@@ -98,7 +98,7 @@ export default function Cart({
                             className="-my-6 divide-y divide-gray-200"
                           >
                             {cart.map((product) => (
-                              <li key={product.id} className="flex py-6">
+                              <li key={product._id} className="flex py-6">
                                 <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                   <img
                                     src={product.img}
@@ -127,7 +127,7 @@ export default function Cart({
                                     <div className="flex">
                                       <button
                                         onClick={() =>
-                                          cartRemoveHandler(product.id)
+                                          cartRemoveHandler(product._id)
                                         }
                                         type="button"
                                         className="font-medium text-indigo-600 hover:text-indigo-500"
@@ -149,7 +149,7 @@ export default function Cart({
                         <p>Subtotal</p>
                         <p>
                           {cart.reduce((acc, el) => {
-                            return acc + el.price;
+                            return acc + parseInt(el.price);
                           }, 0)}
                         </p>
                       </div>

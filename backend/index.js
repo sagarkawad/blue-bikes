@@ -38,6 +38,9 @@ const itemSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  img: {
+    type: String,
+  },
 });
 
 const Order = mongoose.model("Order", {
@@ -180,6 +183,25 @@ app.post("/addtocart", decodeUser, async function (req, res) {
   } catch (err) {
     res.json({ msg: err });
   }
+});
+
+app.post("/getcart", decodeUser, async function (req, res) {
+  if (!req.decoded) {
+    console.log("user cannot be found");
+    return;
+  }
+
+  async function findUser() {
+    try {
+      const user = await User.findOne({ email: req.decoded.email });
+      console.log(user);
+      res.send(user);
+    } catch (err) {
+      res.status(500).send(err);
+    }
+  }
+
+  findUser();
 });
 
 app.listen(3000, () => {

@@ -88,13 +88,11 @@ export default function ProductView({ productData, cartHandler }) {
 
   const params = useParams();
 
-  if (productData.id != params.productId) {
+  if (productData._id != params.productId) {
     return <Navigate to="/" />;
     console.log(params.productId);
     console.log(productData.id);
   }
-
-  
 
   return (
     <div className="bg-white">
