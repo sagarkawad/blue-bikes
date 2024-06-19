@@ -100,7 +100,6 @@ app.post("/address", async function (req, res) {
 
 app.post("/addtocart", async function (req, res) {
   if (!req.decoded) {
-    console.log("user cannot be found");
     return;
   }
 
@@ -118,14 +117,12 @@ app.post("/addtocart", async function (req, res) {
 
 app.post("/getcart", async function (req, res) {
   if (!req.decoded) {
-    console.log("user cannot be found");
     return;
   }
 
   async function findUser() {
     try {
       const user = await User.findOne({ email: req.decoded.email });
-      console.log(user);
       res.send(user);
     } catch (err) {
       res.status(500).send(err);
