@@ -1,13 +1,20 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+//import libraries
+import express from "express";
+import cors from "cors";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+//import schemas
+import { userSchema, productSchema, orderSchema } from "./schemas/schemas.js";
+
+//import middlewares
+import { existingUser } from "./middlewares/middlewares.js";
 
 const JWT_SECRET = "secret";
 
@@ -17,59 +24,9 @@ mongoose
   )
   .then(() => console.log("Connected!"));
 
-const Product = mongoose.model("Product", {
-  img: String,
-  color: String,
-  name: String,
-  price: Number,
-});
-
-// Define a schema for the items
-const itemSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  color: {
-    type: String,
-    required: true,
-  },
-  price: {
-    type: String,
-    required: true,
-  },
-  img: {
-    type: String,
-  },
-});
-
-const Order = mongoose.model("Order", {
-  items: [itemSchema],
-  user: {
-    type: String,
-    required: true,
-  },
-});
-
-const userSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    lowercase: true,
-    trim: true,
-    match: [/^\S+@\S+\.\S+$/, "Please use a valid email address."],
-  },
-  password: {
-    type: String,
-    required: true,
-    minlength: 6,
-  },
-  address: {
-    type: String,
-  },
-  products: [itemSchema],
-});
+const Product = mongoose.model("Product", productSchema);
+const Order = mongoose.model("Order", orderSchema);
+const User = mongoose.model("User", userSchema);
 
 // Pre-save hook to hash the password before saving
 userSchema.pre("save", async function (next) {
@@ -88,17 +45,9 @@ userSchema.methods.comparePassword = async function (candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
 };
 
-const User = mongoose.model("User", userSchema);
-
-app.post("/register", async (req, res) => {
+app.post("/register", existingUser, async (req, res) => {
   try {
     const { email, password } = req.body;
-
-    // Check if the user is already registered
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).send("User already registered");
-    }
 
     const user = new User({ email, password });
     await user.save();
