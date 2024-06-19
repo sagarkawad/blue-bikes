@@ -99,10 +99,6 @@ app.post("/address", async function (req, res) {
 });
 
 app.post("/addtocart", async function (req, res) {
-  if (!req.decoded) {
-    return;
-  }
-
   try {
     console.log(req.body.products);
     const DBUser = await User.updateOne(
@@ -116,10 +112,6 @@ app.post("/addtocart", async function (req, res) {
 });
 
 app.post("/getcart", async function (req, res) {
-  if (!req.decoded) {
-    return;
-  }
-
   async function findUser() {
     try {
       const user = await User.findOne({ email: req.decoded.email });
