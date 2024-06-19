@@ -102,15 +102,45 @@ app.post("/payment", async function (req, res) {
   res.json({ msg: "order placed" });
 
   const user = await User.findOne({ email: order.user });
+  const orderNo = await Order.countDocuments();
   console.log("Order with user details:", { order, user });
 
+  let html = `
+  <section>
+  <table id="data-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Color</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Data rows will be inserted here -->
+      
+      ${order.items.map((el) => {
+        return (
+          <tr>
+            <td>el.name</td>
+            <td>el.color</td>
+            <td>el.price</td>
+          </tr>
+        );
+      })}
+      
+    </tbody>
+  </table>
+  <b>This order is placed by the email id ${user.email} and from the address ${
+    user.address
+  }</b>
+  </section>`;
   // send an email
-  // emailsender(
-  //   "sagar_kawad_mca@moderncoe.edu.in",
-  //   "Test Subject",
-  //   "Hello world?",
-  //   "<b>Hello world?</b>"
-  // );
+  emailsender(
+    "pbkawad@gmail.com",
+    "Order Placement",
+    `Blue Bikes - Order No : ${orderNo}`,
+    html
+  );
 });
 
 app.post("/address", async function (req, res) {
