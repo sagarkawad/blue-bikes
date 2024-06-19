@@ -43,6 +43,8 @@ export default function Cart({
   setOpenCart,
   cart,
   cartRemoveHandler,
+  token,
+  user,
 }) {
   //   const [open, setOpen] = useState(true);
 
@@ -160,7 +162,9 @@ export default function Cart({
                         {cart.length > 0 ? (
                           <Link
                             to={
-                              localStorage.getItem("authToken")
+                              token && user.address
+                                ? "/payment"
+                                : token && !user.address
                                 ? "/address"
                                 : "/signin"
                             }

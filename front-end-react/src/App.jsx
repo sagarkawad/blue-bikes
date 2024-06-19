@@ -139,6 +139,8 @@ function App() {
             setOpenCart={setOpenCart}
             cart={cart}
             cartRemoveHandler={cartRemoveHandler}
+            token={token}
+            user={user}
           />
         </>
       ),
