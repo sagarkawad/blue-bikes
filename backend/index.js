@@ -22,6 +22,9 @@ import {
   itemSchema,
 } from "./schemas/schemas.js";
 
+//import custom modules
+import { emailsender } from "./modules/emailsender.js";
+
 //import middlewares
 import { existingUser, userVerify } from "./middlewares/middlewares.js";
 
@@ -97,6 +100,17 @@ app.post("/payment", async function (req, res) {
   const order = new Order({ items: req.body.cart, user: req.decoded.email });
   await order.save();
   res.json({ msg: "order placed" });
+
+  const user = await User.findOne({ email: order.user });
+  console.log("Order with user details:", { order, user });
+
+  // send an email
+  // emailsender(
+  //   "sagar_kawad_mca@moderncoe.edu.in",
+  //   "Test Subject",
+  //   "Hello world?",
+  //   "<b>Hello world?</b>"
+  // );
 });
 
 app.post("/address", async function (req, res) {
