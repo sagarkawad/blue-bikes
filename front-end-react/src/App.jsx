@@ -27,36 +27,39 @@ function App() {
   const [openCart, setOpenCart] = useState(false);
   const [cart, setCart] = useState([]);
   const [products, setProducts] = useState([]);
+  const [user, setUser] = useState({});
+  const [token, setToken] = useState(localStorage.getItem("authToken") || "");
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3000/products")
-      .then((response) => {
-        console.log(response.data);
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/products");
         setProducts(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-      });
+      } catch (err) {
+        console.error("Error fetching data: ", err);
+      }
+    };
 
-    axios
-      .post("http://localhost:3000/getcart", {
-        token: localStorage.getItem("authToken"),
-      })
-      .then((response) => {
-        console.log("res from useeffect: ", response);
-        if (response.data.products) {
-          console.log(response.data.products);
-          setCart(response.data.products);
-        }
-      });
+    // Define the async function to fetch data
+    const fetchUser = async () => {
+      try {
+        const response = await axios.post("http://localhost:3000/me", {
+          token: token,
+        });
+        setUser(response.data);
+        setCart(response.data.products || []);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    // Call the fetch functions
+    fetchUser();
+    fetchProducts();
   }, []);
 
   async function cartHandler(pData) {
-    console.log(cart);
-    console.log(pData);
-
-    if (!localStorage.getItem("authToken")) {
+    if (!user) {
       return;
     }
 

@@ -84,6 +84,15 @@ app.get("/products", async function (req, res) {
 //middleware for the further routes
 app.use(userVerify);
 
+app.post("/me", async function (req, res) {
+  try {
+    const DBUser = await User.findOne({ email: req.decoded.email });
+    res.json(DBUser);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
 app.post("/payment", async function (req, res) {
   const order = new Order({ items: req.body.cart, user: req.decoded.email });
   await order.save();
