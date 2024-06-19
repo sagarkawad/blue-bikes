@@ -4,6 +4,9 @@ import cors from "cors";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
 
@@ -16,13 +19,11 @@ import { userSchema, productSchema, orderSchema } from "./schemas/schemas.js";
 //import middlewares
 import { existingUser, userVerify } from "./middlewares/middlewares.js";
 
-const JWT_SECRET = "secret";
+//constants
+const MONGO_DB_URL = process.env.MONGO_DB;
+const JWT_SECRET = process.env.JWT_SECRET;
 
-mongoose
-  .connect(
-    "mongodb+srv://spkawad21:od4j59PaMgPl7tmi@cluster0.fwvfyuv.mongodb.net/bluebikes?retryWrites=true&w=majority&appName=Cluster0"
-  )
-  .then(() => console.log("Connected!"));
+mongoose.connect(MONGO_DB_URL).then(() => console.log("Connected!"));
 
 const Product = mongoose.model("Product", productSchema);
 const Order = mongoose.model("Order", orderSchema);

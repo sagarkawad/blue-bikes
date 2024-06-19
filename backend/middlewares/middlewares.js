@@ -1,5 +1,12 @@
 import mongoose from "mongoose";
 import express from "express";
+import jwt from "jsonwebtoken";
+
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // Check if the user is already registered
 export async function existingUser(req, res, next) {
