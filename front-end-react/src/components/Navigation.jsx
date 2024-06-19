@@ -18,12 +18,6 @@ import {
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-const user = {
-  name: "Tom Cook",
-  email: "tom@example.com",
-  imageUrl:
-    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-};
 const navigation = [
   { name: "Home", href: "/", current: false },
   { name: "Products", href: "/products", current: false },
@@ -34,12 +28,23 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Navigation({ openCartHandler }) {
-  const [isSigned, setIsSigned] = useState(localStorage.getItem("authToken"));
+export default function Navigation({
+  openCartHandler,
+  isSigned,
+  setIsSigned,
+  loggedInUser,
+}) {
+  const user = {
+    name: loggedInUser?.email || "no user",
+    email: loggedInUser?.email || "no user",
+    imageUrl: isSigned
+      ? "https://static.vecteezy.com/system/resources/thumbnails/007/407/996/small/user-icon-person-icon-client-symbol-login-head-sign-icon-design-vector.jpg"
+      : "https://static.thenounproject.com/png/3319562-200.png",
+  };
 
   let userNavigation;
 
-  if (localStorage.getItem("authToken")) {
+  if (isSigned) {
     userNavigation = [
       { name: "Your Profile", href: "#" },
       { name: "Wishlist", href: "#" },
@@ -52,14 +57,6 @@ export default function Navigation({ openCartHandler }) {
 
   return (
     <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-gray-100">
-        <body class="h-full">
-        ```
-      */}
       <div className="min-h-full">
         <Disclosure as="nav" className="bg-gray-800">
           {({ open }) => (
@@ -138,10 +135,8 @@ export default function Navigation({ openCartHandler }) {
                                       <Link
                                         to={item.href}
                                         onClick={() => {
-                                          console.log("button clicked");
                                           localStorage.removeItem("authToken");
-                                          setIsSigned(false);
-                                          // useNavigate()("/");
+                                          setIsSigned("");
                                         }}
                                         className={classNames(
                                           focus ? "bg-gray-100" : "",

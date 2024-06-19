@@ -31,15 +31,6 @@ function App() {
   const [token, setToken] = useState(localStorage.getItem("authToken") || "");
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get("http://localhost:3000/products");
-        setProducts(response.data);
-      } catch (err) {
-        console.error("Error fetching data: ", err);
-      }
-    };
-
     // Define the async function to fetch data
     const fetchUser = async () => {
       try {
@@ -55,11 +46,23 @@ function App() {
 
     // Call the fetch functions
     fetchUser();
+  }, [token]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/products");
+        setProducts(response.data);
+      } catch (err) {
+        console.error("Error fetching data: ", err);
+      }
+    };
+
     fetchProducts();
   }, []);
 
   async function cartHandler(pData) {
-    if (!user) {
+    if (!token) {
       return;
     }
 
@@ -110,7 +113,7 @@ function App() {
     },
     {
       path: "/signin",
-      element: <SignIn />,
+      element: <SignIn setToken={setToken} />,
     },
     {
       path: "/address",
@@ -124,7 +127,12 @@ function App() {
       path: "/",
       element: (
         <>
-          <Navigation openCartHandler={openCartHandler} />
+          <Navigation
+            openCartHandler={openCartHandler}
+            isSigned={token}
+            setIsSigned={setToken}
+            loggedInUser={user}
+          />
           <Cart
             openCart={openCart}
             openCartHandler={openCartHandler}
