@@ -26,7 +26,7 @@ import {
 import { emailsender } from "./modules/emailsender.js";
 
 //import middlewares
-import { existingUser, userVerify } from "./middlewares/middlewares.js";
+import { userVerify } from "./middlewares/middlewares.js";
 
 //constants
 const MONGO_DB_URL = process.env.MONGO_DB;
@@ -36,6 +36,21 @@ mongoose.connect(MONGO_DB_URL).then(() => console.log("Connected!"));
 
 const Product = mongoose.model("Product", productSchema);
 const Order = mongoose.model("Order", orderSchema);
+
+// Check if the user is already registered
+async function existingUser(req, res, next) {
+  try {
+    const existingUser = await User.findOne({ email: req.body.email });
+    if (existingUser) {
+      console.log(existingUser);
+      res.status(400).send("User already registered");
+    } else {
+      next();
+    }
+  } catch (err) {
+    res.status(500).send(err);
+  }
+}
 
 // Pre-save hook to hash the password before saving
 userSchema.pre("save", async function (next) {
@@ -119,13 +134,11 @@ app.post("/payment", async function (req, res) {
       <!-- Data rows will be inserted here -->
       
       ${order.items.map((el) => {
-        return (
-          <tr>
-            <td>el.name</td>
-            <td>el.color</td>
-            <td>el.price</td>
-          </tr>
-        );
+        return `<tr>
+            <td>${el.name}</td>
+            <td>${el.color}</td>
+            <td>${el.price}</td>
+          </tr>`;
       })}
       
     </tbody>
