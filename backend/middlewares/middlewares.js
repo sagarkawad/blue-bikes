@@ -13,3 +13,14 @@ export async function existingUser(req, res, next) {
   }
   next();
 }
+
+export async function userVerify(req, res, next) {
+  jwt.verify(req.body.token, JWT_SECRET, async function (error, decoded) {
+    if (error) {
+      res.json({ error });
+    } else {
+      req.decoded = decoded;
+    }
+  });
+  next();
+}

@@ -14,7 +14,7 @@ app.use(express.json());
 import { userSchema, productSchema, orderSchema } from "./schemas/schemas.js";
 
 //import middlewares
-import { existingUser } from "./middlewares/middlewares.js";
+import { existingUser, userVerify } from "./middlewares/middlewares.js";
 
 const JWT_SECRET = "secret";
 
@@ -80,43 +80,24 @@ app.get("/products", async function (req, res) {
   res.json(products);
 });
 
+//middleware for the further routes
+app.use(userVerify);
+
 app.post("/payment", async function (req, res) {
-  jwt.verify(req.body.token, JWT_SECRET, async function (error, decoded) {
-    if (error) {
-      res.json({ error });
-    }
-    const order = new Order({ items: req.body.cart, user: decoded.email });
-    await order.save();
-    res.json({ msg: "order placed" });
-  });
+  const order = new Order({ items: req.body.cart, user: req.decoded.email });
+  await order.save();
+  res.json({ msg: "order placed" });
 });
 
 app.post("/address", async function (req, res) {
-  jwt.verify(req.body.token, JWT_SECRET, async (err, decoded) => {
-    if (err) {
-      res.json({ error: err });
-    }
-    console.log("Token is valid:", decoded);
-    const DBUser = await User.updateOne(
-      { email: decoded.email },
-      { $set: { address: req.body.address } }
-    );
-    res.json({ msg: DBUser });
-  });
+  const DBUser = await User.updateOne(
+    { email: req.decoded.email },
+    { $set: { address: req.body.address } }
+  );
+  res.json({ msg: DBUser });
 });
 
-async function decodeUser(req, res, next) {
-  jwt.verify(req.body.token, JWT_SECRET, async (err, decoded) => {
-    if (err) {
-      res.json({ error: err });
-    }
-    console.log("Token is valid:", decoded);
-    req.decoded = decoded;
-    next();
-  });
-}
-
-app.post("/addtocart", decodeUser, async function (req, res) {
+app.post("/addtocart", async function (req, res) {
   if (!req.decoded) {
     console.log("user cannot be found");
     return;
@@ -134,7 +115,7 @@ app.post("/addtocart", decodeUser, async function (req, res) {
   }
 });
 
-app.post("/getcart", decodeUser, async function (req, res) {
+app.post("/getcart", async function (req, res) {
   if (!req.decoded) {
     console.log("user cannot be found");
     return;
