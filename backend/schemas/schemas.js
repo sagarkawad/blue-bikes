@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 // Define a schema for the items
 export const itemSchema = new mongoose.Schema({
@@ -53,3 +54,11 @@ export const userSchema = new mongoose.Schema({
   },
   products: [itemSchema],
 });
+
+// Method to compare password
+userSchema.methods.comparePassword = async function (candidatePassword) {
+  return await bcrypt.compare(candidatePassword, this.password);
+};
+
+// Create and export the User model
+export const User = mongoose.model("User", userSchema);

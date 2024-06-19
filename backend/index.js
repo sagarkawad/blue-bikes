@@ -14,7 +14,13 @@ app.use(cors());
 app.use(express.json());
 
 //import schemas
-import { userSchema, productSchema, orderSchema } from "./schemas/schemas.js";
+import {
+  User,
+  userSchema,
+  productSchema,
+  orderSchema,
+  itemSchema,
+} from "./schemas/schemas.js";
 
 //import middlewares
 import { existingUser, userVerify } from "./middlewares/middlewares.js";
@@ -27,7 +33,6 @@ mongoose.connect(MONGO_DB_URL).then(() => console.log("Connected!"));
 
 const Product = mongoose.model("Product", productSchema);
 const Order = mongoose.model("Order", orderSchema);
-const User = mongoose.model("User", userSchema);
 
 // Pre-save hook to hash the password before saving
 userSchema.pre("save", async function (next) {
@@ -40,11 +45,6 @@ userSchema.pre("save", async function (next) {
     next(error);
   }
 });
-
-// Method to compare passwords
-userSchema.methods.comparePassword = async function (candidatePassword) {
-  return await bcrypt.compare(candidatePassword, this.password);
-};
 
 app.post("/register", existingUser, async (req, res) => {
   try {
