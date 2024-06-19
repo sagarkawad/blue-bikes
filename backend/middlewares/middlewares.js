@@ -17,8 +17,9 @@ export async function existingUser(req, res, next) {
   }
   if (existingUser) {
     res.status(400).send("User already registered");
+  } else {
+    next();
   }
-  next();
 }
 
 export async function userVerify(req, res, next) {
@@ -27,7 +28,7 @@ export async function userVerify(req, res, next) {
       res.json({ error });
     } else {
       req.decoded = decoded;
+      next();
     }
   });
-  next();
 }
