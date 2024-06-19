@@ -121,7 +121,7 @@ function App() {
     },
     {
       path: "/payment",
-      element: <Payment cart={cart} />,
+      element: <Payment cart={cart} setCart={setCart} />,
     },
     {
       path: "/",

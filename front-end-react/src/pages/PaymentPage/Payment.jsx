@@ -2,7 +2,7 @@ import React from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const Payment = ({ cart }) => {
+const Payment = ({ cart, setCart }) => {
   console.log(cart);
   if (cart.length == 0) {
     return <Navigate to="/products" />;
@@ -26,6 +26,7 @@ const Payment = ({ cart }) => {
               );
               console.log("Data submitted successfully", response.data);
               alert("Order Successfully Placed!");
+              setCart([]);
               navigate("/products");
             } catch (error) {
               console.error("Error submitting data", error);

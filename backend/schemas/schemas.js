@@ -24,6 +24,7 @@ export const orderSchema = new mongoose.Schema({
   items: [itemSchema],
   user: {
     type: String,
+    ref: "User",
     required: true,
   },
 });
