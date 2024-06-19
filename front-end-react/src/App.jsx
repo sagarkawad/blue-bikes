@@ -28,8 +28,6 @@ function App() {
   const [cart, setCart] = useState([]);
   const [products, setProducts] = useState([]);
 
-  // const navigate = useNavigate();
-
   useEffect(() => {
     axios
       .get("http://localhost:3000/products")
@@ -57,12 +55,8 @@ function App() {
   async function cartHandler(pData) {
     console.log(cart);
     console.log(pData);
-    // if (cart.includes(pData)) {
-    //   return;
-    // }
 
     if (!localStorage.getItem("authToken")) {
-      // navigate("/signin");
       return;
     }
 

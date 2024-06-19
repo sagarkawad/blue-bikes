@@ -22,7 +22,7 @@
 import { useState } from "react";
 import { StarIcon } from "@heroicons/react/20/solid";
 import { Radio, RadioGroup } from "@headlessui/react";
-import { Link, useParams, Navigate } from "react-router-dom";
+import { Link, useParams, Navigate, useNavigate } from "react-router-dom";
 
 const product = {
   name: "Basic Tee 6-Pack",
@@ -93,6 +93,8 @@ export default function ProductView({ productData, cartHandler }) {
     console.log(params.productId);
     console.log(productData.id);
   }
+
+  const navigate = useNavigate();
 
   return (
     <div className="bg-white">
@@ -289,7 +291,12 @@ export default function ProductView({ productData, cartHandler }) {
               </div>
 
               <button
-                onClick={() => cartHandler(productData)}
+                onClick={() => {
+                  if (!localStorage.getItem("authToken")) {
+                    navigate("/signin");
+                  }
+                  cartHandler(productData);
+                }}
                 className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
               >
                 Add to bag
