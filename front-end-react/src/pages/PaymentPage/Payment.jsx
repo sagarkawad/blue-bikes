@@ -18,7 +18,6 @@ const Payment = ({ cart, setCart }) => {
       });
       console.log("Data submitted successfully", response.data);
       alert("Order Successfully Placed!");
-      navigate("/products");
     } catch (error) {
       console.error("Error submitting data", error);
       alert("Order could not be placed: ", error);
@@ -47,6 +46,7 @@ const Payment = ({ cart, setCart }) => {
             setPaymentHandler();
             setUserCart();
             setCart([]);
+            navigate("/products");
           }}
         >
           Place Order
