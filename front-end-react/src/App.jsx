@@ -7,6 +7,10 @@ import {
 import "./App.css";
 import axios from "axios";
 
+//environment variables
+import dotenv from "dotenv";
+dotenv.config();
+
 //pages
 import HomePage from "./pages/HomePage/HomePage";
 import Products from "./pages/ProductsPage/Products";
@@ -34,7 +38,7 @@ function App() {
     // Define the async function to fetch data
     const fetchUser = async () => {
       try {
-        const response = await axios.post("http://localhost:3000/me", {
+        const response = await axios.post(`${process.env.BACKEND}me`, {
           token: token,
         });
         setUser(response.data);
@@ -51,7 +55,7 @@ function App() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/products");
+        const response = await axios.get(`${process.env.BACKEND}products`);
         setProducts(response.data);
       } catch (err) {
         console.error("Error fetching data: ", err);
