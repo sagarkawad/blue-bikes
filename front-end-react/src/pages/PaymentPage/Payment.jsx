@@ -29,7 +29,7 @@ const Payment = ({ cart, setCart, setOpenCart }) => {
 
   async function setUserCart() {
     try {
-      axios.post("http://localhost:3000/addtocart", {
+      axios.post(`${BACKEND}addtocart`, {
         products: [],
         token: localStorage.getItem("authToken"),
       });
