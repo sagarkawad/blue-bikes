@@ -2,6 +2,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 
+//environment variables
+import { BACKEND } from "./../../constants.js";
+
 export default function SignIn({ setToken }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -10,7 +13,7 @@ export default function SignIn({ setToken }) {
 
   async function setDataHandler() {
     try {
-      const response = await axios.post("http://localhost:3000/login", {
+      const response = await axios.post(`${BACKEND}login`, {
         email,
         password,
       });

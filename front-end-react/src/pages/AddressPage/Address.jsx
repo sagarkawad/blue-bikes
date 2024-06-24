@@ -1,21 +1,10 @@
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
-*/
 import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import { useState, useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+
+//environment variables
+import { BACKEND } from "./../../constants.js";
 
 export default function Address() {
   const [address, setAddress] = useState({});
@@ -25,7 +14,7 @@ export default function Address() {
     const jsonStringifyAddress = JSON.stringify(address);
     console.log(jsonStringifyAddress);
     try {
-      const response = await axios.post("http://localhost:3000/address", {
+      const response = await axios.post(`${BACKEND}address`, {
         token: localStorage.getItem("authToken"),
         address: jsonStringifyAddress,
       });

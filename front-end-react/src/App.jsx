@@ -7,9 +7,7 @@ import {
 import "./App.css";
 import axios from "axios";
 
-//environment variables
-import dotenv from "dotenv";
-dotenv.config();
+import { BACKEND } from "./constants.js";
 
 //pages
 import HomePage from "./pages/HomePage/HomePage";
@@ -38,7 +36,7 @@ function App() {
     // Define the async function to fetch data
     const fetchUser = async () => {
       try {
-        const response = await axios.post(`${process.env.BACKEND}me`, {
+        const response = await axios.post(`${BACKEND}me`, {
           token: token,
         });
         setUser(response.data);
@@ -55,7 +53,7 @@ function App() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get(`${process.env.BACKEND}products`);
+        const response = await axios.get(`${BACKEND}products`);
         setProducts(response.data);
       } catch (err) {
         console.error("Error fetching data: ", err);
@@ -82,7 +80,7 @@ function App() {
         return [...prevCart];
       }
 
-      axios.post("http://localhost:3000/addtocart", {
+      axios.post(`${BACKEND}addtocart`, {
         products: [...prevCart, pData],
         token: localStorage.getItem("authToken"),
       });
@@ -94,7 +92,7 @@ function App() {
   function cartRemoveHandler(pid) {
     //removes the data from the cart
     setCart((prevCart) => {
-      axios.post("http://localhost:3000/addtocart", {
+      axios.post(`${BACKEND}addtocart`, {
         products: prevCart.filter((el) => el._id != pid),
         token: localStorage.getItem("authToken"),
       });

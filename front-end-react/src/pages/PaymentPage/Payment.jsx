@@ -2,6 +2,9 @@ import React from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
 
+//environment variables
+import { BACKEND } from "./../../constants.js";
+
 const Payment = ({ cart, setCart, setOpenCart }) => {
   console.log(cart);
   if (cart.length == 0) {
@@ -12,7 +15,7 @@ const Payment = ({ cart, setCart, setOpenCart }) => {
 
   async function setPaymentHandler() {
     try {
-      const response = await axios.post("http://localhost:3000/payment", {
+      const response = await axios.post(`${BACKEND}payment`, {
         cart: cart,
         token: localStorage.getItem("authToken"),
       });

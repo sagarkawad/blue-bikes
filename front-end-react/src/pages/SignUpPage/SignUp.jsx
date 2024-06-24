@@ -1,21 +1,9 @@
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
-*/
-
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
+
+//environment variables
+import { BACKEND } from "./../../constants.js";
 
 export default function SignUp() {
   const [email, setEmail] = useState("");
@@ -27,7 +15,7 @@ export default function SignUp() {
     console.log("signup clicked");
 
     try {
-      const response = await axios.post("http://localhost:3000/register", {
+      const response = await axios.post(`${BACKEND}register`, {
         email,
         password,
       });
