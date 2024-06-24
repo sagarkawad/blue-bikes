@@ -26,7 +26,7 @@ import {
 import { emailsender } from "./modules/emailsender.js";
 
 //import middlewares
-import { userVerify } from "./middlewares/middlewares.js";
+import { userVerify, existingUser } from "./middlewares/middlewares.js";
 
 //constants
 const MONGO_DB_URL = process.env.MONGO_DB;
@@ -36,33 +36,6 @@ mongoose.connect(MONGO_DB_URL).then(() => console.log("Connected!"));
 
 const Product = mongoose.model("Product", productSchema);
 const Order = mongoose.model("Order", orderSchema);
-
-// Check if the user is already registered
-async function existingUser(req, res, next) {
-  try {
-    const existingUser = await User.findOne({ email: req.body.email });
-    if (existingUser) {
-      console.log(existingUser);
-      res.status(400).send("User already registered");
-    } else {
-      next();
-    }
-  } catch (err) {
-    res.status(500).send(err);
-  }
-}
-
-// Pre-save hook to hash the password before saving
-userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();
-  try {
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
-    next();
-  } catch (error) {
-    next(error);
-  }
-});
 
 app.post("/register", existingUser, async (req, res) => {
   try {
@@ -122,6 +95,7 @@ app.post("/payment", async function (req, res) {
 
   let html = `
   <section>
+  <b>Blue Bikes - Order No : ${orderNo}</b>
   <table id="data-table">
     <thead>
       <tr>
@@ -149,7 +123,7 @@ app.post("/payment", async function (req, res) {
   </section>`;
   // send an email
   emailsender(
-    "pbkawad@gmail.com",
+    "sagar_kawad_mca@moderncoe.edu.in",
     "Order Placement",
     `Blue Bikes - Order No : ${orderNo}`,
     html

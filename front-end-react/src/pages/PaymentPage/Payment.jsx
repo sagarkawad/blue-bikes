@@ -2,7 +2,7 @@ import React from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const Payment = ({ cart, setCart }) => {
+const Payment = ({ cart, setCart, setOpenCart }) => {
   console.log(cart);
   if (cart.length == 0) {
     return <Navigate to="/products" />;
@@ -46,6 +46,7 @@ const Payment = ({ cart, setCart }) => {
             setPaymentHandler();
             setUserCart();
             setCart([]);
+            setOpenCart(false);
             navigate("/products");
           }}
         >

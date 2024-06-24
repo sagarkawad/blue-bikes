@@ -13,13 +13,15 @@
   ```
 */
 
-import { Link, Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 
 export default function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
 
   async function setDataHandler() {
     console.log("signup clicked");
@@ -33,7 +35,7 @@ export default function SignUp() {
       setEmail("");
       setPassword("");
 
-      <Navigate to="/signin" />;
+      navigate("/signin");
     } catch (error) {
       console.error("Error sending data", error);
     }

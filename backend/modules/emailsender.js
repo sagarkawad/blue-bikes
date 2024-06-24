@@ -15,7 +15,7 @@ export const emailsender = async (to, subject, text, html) => {
 
   // Setup email data with unicode symbols
   let mailOptions = {
-    from: '"Your Name" <your-email@gmail.com>', // Sender address
+    from: "<your-email@gmail.com>", // Sender address
     to: to, // List of recipients
     subject: subject, // Subject line
     text: text, // Plain text body
@@ -31,5 +31,3 @@ export const emailsender = async (to, subject, text, html) => {
     console.error("Error sending email:", error);
   }
 };
-
-
