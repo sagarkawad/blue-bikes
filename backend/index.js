@@ -164,6 +164,6 @@ app.post("/getcart", async function (req, res) {
   findUser();
 });
 
-app.listen(3000, process.env.SERVER, () => {
-  console.log("server is up and running" + process.env.SERVER + "on port 3000");
+app.listen(3000, () => {
+  console.log("server is up and running on port 3000");
 });
