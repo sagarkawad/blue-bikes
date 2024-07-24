@@ -50,7 +50,7 @@ const Payment = ({ cart, setCart, setOpenCart }) => {
           Pay on Delivery
         </h2>
         <button
-          className="text-center bg-green-500 rounded border w-28 h-8 border-2"
+          className="text-center bg-green-500 rounded  w-28 h-8 border-2"
           onClick={() => {
             setPaymentHandler();
             setUserCart();
