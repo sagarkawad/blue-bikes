@@ -39,12 +39,18 @@ const Payment = ({ cart, setCart, setOpenCart }) => {
   }
 
   return (
-    <div>
-      <h1>Choose your preferred way to pay</h1>
-      <div>Online</div>
-      <div>
-        <h2>Pay on Delivery</h2>
+    <div className="flex flex-col justify-center items-center h-screen">
+      <h1 className="mb-4">Choose your preferred way to pay</h1>
+      <div className="flex flex-col justify-center items-center">
+        <h2 className="border-2 rounded w-48 h-12 flex flex-col justify-center items-center mb-2">
+          Online
+        </h2>
+
+        <h2 className="border-2 rounded w-48 h-12 flex flex-col justify-center items-center mb-4">
+          Pay on Delivery
+        </h2>
         <button
+          className="text-center bg-green-500 rounded border w-28 h-8 border-2"
           onClick={() => {
             setPaymentHandler();
             setUserCart();
