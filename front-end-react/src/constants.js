@@ -1,1 +1,1 @@
-export const BACKEND = "https://backend.becle.in/";
+export const BACKEND = "https://akamai-nanode-bb.duckdns.org/";

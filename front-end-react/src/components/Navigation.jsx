@@ -67,7 +67,7 @@ export default function Navigation({
                     <div className="flex-shrink-0">
                       <img
                         className="h-8 w-8"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmJXR1c9Yiajwh0lMRxx65JzKnklCxbmmSeA&s"
                         alt="Your Company"
                       />
                     </div>
